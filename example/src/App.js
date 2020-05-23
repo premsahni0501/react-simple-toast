@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { useToastShow, ToastProvider } from 'react-simple-toast'
-import 'react-simple-toast/dist/index.css'
+import { useToastShow, ToastProvider } from 'react-simple-toaster'
+import 'react-simple-toaster/dist/index.css'
 
 const App = () => {
   const showToast = useToastShow();

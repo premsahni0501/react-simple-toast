@@ -2,12 +2,12 @@
 
 > Simple Toast message React package
 
-[![NPM](https://img.shields.io/npm/v/react-simple-toast.svg)](https://www.npmjs.com/package/react-simple-toast) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-simple-toaster.svg)](https://www.npmjs.com/package/react-simple-toaster) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save react-react-simple-toast
+npm install --save react-simple-toaster
 ```
 
 ## Usage
@@ -15,8 +15,8 @@ npm install --save react-react-simple-toast
 ```jsx
 import React from 'react'
 
-import { useToastShow, ToastProvider } from 'react-simple-toast'
-import 'react-simple-toast/dist/index.css'
+import { useToastShow, ToastProvider } from 'react-simple-toaster'
+import 'react-simple-toaster/dist/index.css'
 
 const App = () => {
   const showToast = useToastShow()
