@@ -65,7 +65,7 @@ export default withShowToast(ClassComponent)
 #### Params
 
 ```js
-showToast(msg, theme, className, customStyle)
+showToast(msg, timeout, theme, className, customStyle)
 ```
 
 | Param       | Value                                                |
