@@ -7,8 +7,9 @@ const ToastDispatchContext = createContext();
 function ToastReducer(state, action) {
   switch (action.type) {
     case 'show': {
+      console.log(action);
       return {
-        messages: [...state.messages, action.toast]
+        messages: [...state.messages, action.toast],
       }
     }
     case 'remove': {
@@ -55,7 +56,8 @@ function useToastDispatch() {
 }
 function useToastShow() {
   const dispatch = useToastDispatch();
-  return (msg, timeout) => {
+
+  return (msg, timeout, theme, className, customStyle) => {
     if (!msg) return;
     const timestamp = Date.now();
     const removeTimeout = () => setTimeout(() => {
@@ -68,8 +70,11 @@ function useToastShow() {
         timer() {
           return removeTimeout();
         },
-        timestamp
-      }
+        timestamp,
+        theme,
+        customStyle,
+        className
+      },
     }
     dispatch(toastObj);
     removeTimeout()
@@ -79,9 +84,9 @@ function ToastConsumer({ children }) {
   const state = useToastState()
   console.log(state)
   useEffect(() => {
-    const lastChild = document.querySelector('.toast-wrapper .toast:last-child');
-    if (lastChild) {
-      lastChild.scrollIntoView({
+    const firstChildEl = document.querySelector('.toast-wrapper');
+    if (firstChildEl && firstChildEl.lastChild) {
+      firstChildEl.lastChild.scrollIntoView({
         behavior: 'smooth'
       })
     }
@@ -94,29 +99,31 @@ function ToastConsumer({ children }) {
             throw new Error('ToastConsumer must be used within a ToastProvider')
           }
           const { messages } = context;
-
           return (
             <ToastDispatchContext.Consumer>
               {dispatch => (
                 <div>
                   {children}
                   {messages.length ? (
-                    <div className={'toast-wrapper ' + style['toast-wrapper']}>
+                    <div
+                      className={`toast-wrapper ${style['toast-wrapper']}`}>
                       {
                         messages.map(m => (
                           <div
-                            className={'toast ' + style['toast']}
+                            className={`toast ${style['toast']}${' ' + style[m.theme] || ''}${' ' + m.className || ''}`}
                             role="alert"
-                            key={'_' + Math.random() * m.timestamp}>
+                            key={'_' + Math.random() * m.timestamp}
+                            style={m.customStyle && m.customStyle.toaster ? m.customStyle.toaster : {}}>
                             <span>{m.msg}</span>
                             <br></br>
                             <button
                               className={style['toast-btn']}
-                              onClick={() => dispatch({ type: 'remove', timestamp: m.timestamp })}>
+                              onClick={() => dispatch({ type: 'remove', timestamp: m.timestamp })}
+                              style={m.customStyle && m.customStyle.button ? m.customStyle.button : {}}>
                               &times;
                               </button>
                           </div>
-                        )).reverse()
+                        ))
                       }
                     </div>
                   ) : null}

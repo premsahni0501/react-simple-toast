@@ -21,7 +21,7 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
-var style = {"toast-wrapper":"_2tzRf","toast":"_2oYpK","toast-btn":"_MiV0i"};
+var style = {"toast-wrapper":"_Toaster__toast-wrapper__2tzRf","toast":"_Toaster__toast__2oYpK","light":"_Toaster__light__D02k4","toast-btn":"_Toaster__toast-btn__MiV0i","dark":"_Toaster__dark__2nbNP","success":"_Toaster__success__2cyYG","info":"_Toaster__info__3NO6s","danger":"_Toaster__danger__2ke0x","warning":"_Toaster__warning__2yadJ"};
 
 var ToastStateContext = React.createContext();
 var ToastDispatchContext = React.createContext();
@@ -30,6 +30,7 @@ function ToastReducer(state, action) {
   switch (action.type) {
     case 'show':
       {
+        console.log(action);
         return {
           messages: [].concat(state.messages, [action.toast])
         };
@@ -100,7 +101,7 @@ function useToastDispatch() {
 
 function useToastShow() {
   var dispatch = useToastDispatch();
-  return function (msg, timeout) {
+  return function (msg, timeout, theme, className, customStyle) {
     if (!msg) return;
     var timestamp = Date.now();
 
@@ -120,7 +121,10 @@ function useToastShow() {
         timer: function timer() {
           return removeTimeout();
         },
-        timestamp: timestamp
+        timestamp: timestamp,
+        theme: theme,
+        customStyle: customStyle,
+        className: className
       }
     };
     dispatch(toastObj);
@@ -133,10 +137,10 @@ function ToastConsumer(_ref2) {
   var state = useToastState();
   console.log(state);
   React.useEffect(function () {
-    var lastChild = document.querySelector('.toast-wrapper .toast:last-child');
+    var firstChildEl = document.querySelector('.toast-wrapper');
 
-    if (lastChild) {
-      lastChild.scrollIntoView({
+    if (firstChildEl && firstChildEl.lastChild) {
+      firstChildEl.lastChild.scrollIntoView({
         behavior: 'smooth'
       });
     }
@@ -149,12 +153,13 @@ function ToastConsumer(_ref2) {
     var messages = context.messages;
     return /*#__PURE__*/React__default.createElement(ToastDispatchContext.Consumer, null, function (dispatch) {
       return /*#__PURE__*/React__default.createElement("div", null, children, messages.length ? /*#__PURE__*/React__default.createElement("div", {
-        className: 'toast-wrapper ' + style['toast-wrapper']
+        className: "toast-wrapper " + style['toast-wrapper']
       }, messages.map(function (m) {
         return /*#__PURE__*/React__default.createElement("div", {
-          className: 'toast ' + style['toast'],
+          className: "toast " + style['toast'] + (' ' + style[m.theme] || '') + (' ' + m.className || ''),
           role: "alert",
-          key: '_' + Math.random() * m.timestamp
+          key: '_' + Math.random() * m.timestamp,
+          style: m.customStyle && m.customStyle.toaster ? m.customStyle.toaster : {}
         }, /*#__PURE__*/React__default.createElement("span", null, m.msg), /*#__PURE__*/React__default.createElement("br", null), /*#__PURE__*/React__default.createElement("button", {
           className: style['toast-btn'],
           onClick: function onClick() {
@@ -162,9 +167,10 @@ function ToastConsumer(_ref2) {
               type: 'remove',
               timestamp: m.timestamp
             });
-          }
+          },
+          style: m.customStyle && m.customStyle.button ? m.customStyle.button : {}
         }, "\xD7"));
-      }).reverse()) : null);
+      })) : null);
     });
   });
 }

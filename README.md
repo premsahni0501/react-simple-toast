@@ -12,6 +12,8 @@ npm install --save react-simple-toaster
 
 ## Usage
 
+### Functional Component
+
 ```jsx
 import React from 'react'
 
@@ -33,6 +35,45 @@ const ToastWrapper = () => (
 )
 export default ToastWrapper
 ```
+
+### Class based component
+
+```jsx
+import React from 'react'
+import { withShowToast } from 'react-simple-toaster'
+
+class ClassComponent extends React.Component {
+  render() {
+    const { showToast } = this.props
+    return (
+      <div className='container'>
+        <h1>Class Component</h1>
+        <br />
+        <button
+          className='btn'
+          onClick={() => showToast('Toast from Class based component')}
+        >
+          ClassComponent Button
+        </button>
+      </div>
+    )
+  }
+}
+export default withShowToast(ClassComponent)
+```
+
+#### Params
+
+```js
+showToast(msg, theme, className, customStyle)
+```
+
+| Param       | Value                                                |
+| ----------- | ---------------------------------------------------- |
+| msg         | string                                               |
+| theme       | light(default), dark, danger, success, warning, info |
+| className   | custom class name                                    |
+| customStyle | `{ toaster: {}, button: {}}`                         |
 
 ## Demo
 

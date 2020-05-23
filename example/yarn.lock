@@ -8715,12 +8715,9 @@ react-is@^16.8.1, react-is@^16.8.4:
   version "0.0.0"
   uid ""
 
-react-simple-toaster@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/react-simple-toaster/-/react-simple-toaster-0.0.2.tgz#ccdcf75b297ddf9d505688465a9ec5bfef603ec9"
-  integrity sha512-mw8UTAvVldF3fxegA4pVNqsVht3olkoyA0E2L0jaC2cOR6tBqcnbB99F1PeJ2N4cDyJ1D9ASo5FgaoUDjKHXVg==
-  dependencies:
-    node-sass "^4.14.1"
+"react-simple-toaster@link:..":
+  version "0.0.0"
+  uid ""
 
 "react@link:../node_modules/react":
   version "0.0.0"
