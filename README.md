@@ -71,6 +71,7 @@ showToast(msg, theme, className, customStyle)
 | Param       | Value                                                |
 | ----------- | ---------------------------------------------------- |
 | msg         | string                                               |
+| timeout     | miliseconds                                          |
 | theme       | light(default), dark, danger, success, warning, info |
 | className   | custom class name                                    |
 | customStyle | `{ toaster: {}, button: {}}`                         |
