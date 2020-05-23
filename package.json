@@ -1,6 +1,6 @@
 {
-  "name": "react-simple-toast",
-  "version": "1.0.0",
+  "name": "react-simple-toaster",
+  "version": "0.0.2",
   "description": "Simple Toast message react package",
   "author": "premsahni0501",
   "license": "MIT",
