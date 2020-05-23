@@ -36,4 +36,8 @@ export default ToastWrapper
 
 ## License
 
+Check demo [here](https://premsahni0501.github.io/react-simple-toast/)
+
+## License
+
 MIT © [premsahni0501](https://github.com/premsahni0501)
