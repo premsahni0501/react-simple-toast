@@ -21,7 +21,7 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
-var style = {"toast-wrapper":"_Toaster__toast-wrapper__2tzRf","toast":"_Toaster__toast__2oYpK","light":"_Toaster__light__D02k4","toast-btn":"_Toaster__toast-btn__MiV0i","dark":"_Toaster__dark__2nbNP","success":"_Toaster__success__2cyYG","info":"_Toaster__info__3NO6s","danger":"_Toaster__danger__2ke0x","warning":"_Toaster__warning__2yadJ"};
+var style = {"toast-wrapper":"_2tzRf","toast":"_2oYpK","light":"_D02k4","toast-btn":"_MiV0i","dark":"_2nbNP","success":"_2cyYG","info":"_3NO6s","danger":"_2ke0x","warning":"_2yadJ"};
 
 var ToastStateContext = React.createContext();
 var ToastDispatchContext = React.createContext();

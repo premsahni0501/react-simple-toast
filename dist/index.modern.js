@@ -1,9 +1,27 @@
 import React, { createContext, useReducer, useEffect, useContext } from 'react';
 
-var style = {"toast-wrapper":"_Toaster__toast-wrapper__2tzRf","toast":"_Toaster__toast__2oYpK","light":"_Toaster__light__D02k4","toast-btn":"_Toaster__toast-btn__MiV0i","dark":"_Toaster__dark__2nbNP","success":"_Toaster__success__2cyYG","info":"_Toaster__info__3NO6s","danger":"_Toaster__danger__2ke0x","warning":"_Toaster__warning__2yadJ"};
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
-const ToastStateContext = createContext();
-const ToastDispatchContext = createContext();
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+var style = {"toast-wrapper":"_2tzRf","toast":"_2oYpK","light":"_D02k4","toast-btn":"_MiV0i","dark":"_2nbNP","success":"_2cyYG","info":"_3NO6s","danger":"_2ke0x","warning":"_2yadJ"};
+
+var ToastStateContext = createContext();
+var ToastDispatchContext = createContext();
 
 function ToastReducer(state, action) {
   switch (action.type) {
@@ -11,41 +29,46 @@ function ToastReducer(state, action) {
       {
         console.log(action);
         return {
-          messages: [...state.messages, action.toast]
+          messages: [].concat(state.messages, [action.toast])
         };
       }
 
     case 'remove':
       {
-        const {
-          messages
-        } = state;
-        const found = messages.filter(m => m.timestamp === action.timestamp);
-        const filtered = messages.filter(m => m.timestamp !== action.timestamp);
+        var messages = state.messages;
+        var found = messages.filter(function (m) {
+          return m.timestamp === action.timestamp;
+        });
+        var filtered = messages.filter(function (m) {
+          return m.timestamp !== action.timestamp;
+        });
 
         if (found.length) {
-          const toast = found[0];
+          var toast = found[0];
           clearTimeout(toast.timer());
         }
 
         return {
-          messages: [...filtered]
+          messages: [].concat(filtered)
         };
       }
 
     default:
       {
-        throw new Error(`Unhandled action type: ${action.type}`);
+        throw new Error("Unhandled action type: " + action.type);
       }
   }
 }
 
-function ToastProvider({
-  children
-}) {
-  const [state, dispatch] = useReducer(ToastReducer, {
+function ToastProvider(_ref) {
+  var children = _ref.children;
+
+  var _useReducer = useReducer(ToastReducer, {
     messages: []
-  });
+  }),
+      state = _useReducer[0],
+      dispatch = _useReducer[1];
+
   return /*#__PURE__*/React.createElement(ToastStateContext.Provider, {
     value: state
   }, /*#__PURE__*/React.createElement(ToastDispatchContext.Provider, {
@@ -54,7 +77,7 @@ function ToastProvider({
 }
 
 function useToastState() {
-  const context = useContext(ToastStateContext);
+  var context = useContext(ToastStateContext);
 
   if (context === undefined) {
     throw new Error('useToastState must be used within a ToastProvider');
@@ -64,7 +87,7 @@ function useToastState() {
 }
 
 function useToastDispatch() {
-  const context = useContext(ToastDispatchContext);
+  var context = useContext(ToastDispatchContext);
 
   if (context === undefined) {
     throw new Error('useToastDispatch must be used within a ToastProvider');
@@ -74,31 +97,31 @@ function useToastDispatch() {
 }
 
 function useToastShow() {
-  const dispatch = useToastDispatch();
-  return (msg, timeout, theme, className, customStyle) => {
+  var dispatch = useToastDispatch();
+  return function (msg, timeout, theme, className, customStyle) {
     if (!msg) return;
-    const timestamp = Date.now();
+    var timestamp = Date.now();
 
-    const removeTimeout = () => setTimeout(() => {
-      dispatch({
-        type: 'remove',
-        timestamp
-      });
-    }, timeout || 5000);
+    var removeTimeout = function removeTimeout() {
+      return setTimeout(function () {
+        dispatch({
+          type: 'remove',
+          timestamp: timestamp
+        });
+      }, timeout || 5000);
+    };
 
-    const toastObj = {
+    var toastObj = {
       type: 'show',
       toast: {
-        msg,
-
-        timer() {
+        msg: msg,
+        timer: function timer() {
           return removeTimeout();
         },
-
-        timestamp,
-        theme,
-        customStyle,
-        className
+        timestamp: timestamp,
+        theme: theme,
+        customStyle: customStyle,
+        className: className
       }
     };
     dispatch(toastObj);
@@ -106,13 +129,12 @@ function useToastShow() {
   };
 }
 
-function ToastConsumer({
-  children
-}) {
-  const state = useToastState();
+function ToastConsumer(_ref2) {
+  var children = _ref2.children;
+  var state = useToastState();
   console.log(state);
-  useEffect(() => {
-    const firstChildEl = document.querySelector('.toast-wrapper');
+  useEffect(function () {
+    var firstChildEl = document.querySelector('.toast-wrapper');
 
     if (firstChildEl && firstChildEl.lastChild) {
       firstChildEl.lastChild.scrollIntoView({
@@ -120,29 +142,33 @@ function ToastConsumer({
       });
     }
   }, [state]);
-  return /*#__PURE__*/React.createElement(ToastStateContext.Consumer, null, context => {
+  return /*#__PURE__*/React.createElement(ToastStateContext.Consumer, null, function (context) {
     if (context === undefined) {
       throw new Error('ToastConsumer must be used within a ToastProvider');
     }
 
-    const {
-      messages
-    } = context;
-    return /*#__PURE__*/React.createElement(ToastDispatchContext.Consumer, null, dispatch => /*#__PURE__*/React.createElement("div", null, children, messages.length ? /*#__PURE__*/React.createElement("div", {
-      className: `toast-wrapper ${style['toast-wrapper']}`
-    }, messages.map(m => /*#__PURE__*/React.createElement("div", {
-      className: `toast ${style['toast']}${' ' + style[m.theme] || ''}${' ' + m.className || ''}`,
-      role: "alert",
-      key: '_' + Math.random() * m.timestamp,
-      style: m.customStyle && m.customStyle.toaster ? m.customStyle.toaster : {}
-    }, /*#__PURE__*/React.createElement("span", null, m.msg), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("button", {
-      className: style['toast-btn'],
-      onClick: () => dispatch({
-        type: 'remove',
-        timestamp: m.timestamp
-      }),
-      style: m.customStyle && m.customStyle.button ? m.customStyle.button : {}
-    }, "\xD7")))) : null));
+    var messages = context.messages;
+    return /*#__PURE__*/React.createElement(ToastDispatchContext.Consumer, null, function (dispatch) {
+      return /*#__PURE__*/React.createElement("div", null, children, messages.length ? /*#__PURE__*/React.createElement("div", {
+        className: "toast-wrapper " + style['toast-wrapper']
+      }, messages.map(function (m) {
+        return /*#__PURE__*/React.createElement("div", {
+          className: "toast " + style['toast'] + (' ' + style[m.theme] || '') + (' ' + m.className || ''),
+          role: "alert",
+          key: '_' + Math.random() * m.timestamp,
+          style: m.customStyle && m.customStyle.toaster ? m.customStyle.toaster : {}
+        }, /*#__PURE__*/React.createElement("span", null, m.msg), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("button", {
+          className: style['toast-btn'],
+          onClick: function onClick() {
+            return dispatch({
+              type: 'remove',
+              timestamp: m.timestamp
+            });
+          },
+          style: m.customStyle && m.customStyle.button ? m.customStyle.button : {}
+        }, "\xD7"));
+      })) : null);
+    });
   });
 }
 
@@ -152,8 +178,8 @@ function useToast() {
 
 function withShowToast(WrappedComponent) {
   return function (props) {
-    const showToast = useToastShow();
-    return /*#__PURE__*/React.createElement(WrappedComponent, Object.assign({}, props, {
+    var showToast = useToastShow();
+    return /*#__PURE__*/React.createElement(WrappedComponent, _extends({}, props, {
       showToast: showToast
     }));
   };

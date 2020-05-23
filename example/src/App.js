@@ -46,7 +46,6 @@ const ToastWrapper = () => (
   <ToastProvider>
     <div className="App">
       <App />
-      <ClassComponent />
     </div>
   </ToastProvider>
 )
