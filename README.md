@@ -34,7 +34,7 @@ const ToastWrapper = () => (
 export default ToastWrapper
 ```
 
-## License
+## Demo
 
 Check demo [here](https://premsahni0501.github.io/react-simple-toast/)
 
